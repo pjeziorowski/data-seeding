@@ -10,10 +10,10 @@ const pool = new Pool({
 })
 
 /* GET home page. */
-router.get('/', function (req, res, next) {
+router.get('/', function (req, response, next) {
   pool.query('select * from users', (err, res) => {
     console.log(res)
-    res.json({users: res})
+    response.json({users: res})
     pool.end()
   })
 });
