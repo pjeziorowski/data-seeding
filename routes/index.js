@@ -11,7 +11,7 @@ const pool = new Pool({
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-  pool.query(seedQuery, (err, res) => {
+  pool.query('select * from users', (err, res) => {
     console.log(err, res)
     res.render('index', { title: 'Express', users: res })
     pool.end()
