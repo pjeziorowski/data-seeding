@@ -1,24 +1,17 @@
-const { Client } = require('pg')
 const fs = require('fs')
+const { Pool } = require('pg')
 
 require("dotenv").config()
-
 const databaseUrl = process.env.DATABASE_URL || 'postgresql://localhost:5432/test';
+const pool = new Pool({
+    connectionString: databaseUrl,
+})
 
-console.log('Connecting to database ' + databaseUrl)
-
-const client = new Client({ connectionString: databaseUrl });
-client.connect()
-
-const seedQuery = fs.readFileSync('db/seeding.sql', { encoding: 'utf8' })
-
-if (process.env.NODE_ENV != 'production') {
-    client.query(seedQuery, [], (err, res) => {
-        if (err) throw err
+if (process.env.NODE_ENV !== 'production') {
+    const seedQuery = fs.readFileSync('db/seeding.sql', { encoding: 'utf8' })
+    pool.query(seedQuery, (err, res) => {
+        console.log(err, res)
         console.log('Seeding Completed!')
+        pool.end()
     })
-} else {
-    console.log('Production - skipping database seeding')
 }
-
-client.end()
