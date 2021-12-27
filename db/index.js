@@ -8,8 +8,14 @@ client.connect()
 
 const seedQuery = fs.readFileSync('./seeding.sql', { encoding: 'utf8' })
 
-client.query(seedQuery, [], (err, res) => {
-    if (err) throw err
-    console.log('Seeding Completed!')
-    client.end()
-})
+if (process.env.NODE_ENV != 'production') {
+    client.query(seedQuery, [], (err, res) => {
+        if (err) throw err
+        console.log('Seeding Completed!')
+    })
+} else {
+    console.log('Production - skipping database seeding')
+
+}
+
+client.end()
