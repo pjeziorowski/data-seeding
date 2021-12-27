@@ -7,7 +7,7 @@ const databaseUrl = process.env.DATABASE_URL || 'postgresql://localhost:5432/tes
 const client = new Client({ connectionString: databaseUrl });
 client.connect()
 
-const seedQuery = fs.readFileSync('./seeding.sql', { encoding: 'utf8' })
+const seedQuery = fs.readFileSync('seeding.sql', { encoding: 'utf8' })
 
 if (process.env.NODE_ENV != 'production') {
     client.query(seedQuery, [], (err, res) => {
