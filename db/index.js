@@ -1,9 +1,10 @@
 const { Client } = require('pg')
 const fs = require('fs')
-const client = new Client()
 
 require("dotenv").config()
 
+const databaseUrl = process.env.DATABASE_URL || 'postgresql://localhost:5432/test';
+const client = new Client({ connectionString: databaseUrl });
 client.connect()
 
 const seedQuery = fs.readFileSync('./seeding.sql', { encoding: 'utf8' })

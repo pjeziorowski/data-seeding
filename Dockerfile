@@ -17,6 +17,6 @@ COPY . .
 
 EXPOSE 3000
 
-ENTRYPOINT ["npm run seed"]
+ENTRYPOINT ["node db/index.js"]
 
 CMD [ "node", "bin/www" ]
