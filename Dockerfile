@@ -17,6 +17,6 @@ COPY . .
 
 EXPOSE 3000
 
-ENTRYPOINT ["node", "db/index.js"]
+ENTRYPOINT ["./entrypoint.sh"]
 
 CMD [ "node", "bin/www" ]
