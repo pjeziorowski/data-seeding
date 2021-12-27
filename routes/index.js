@@ -1,21 +1,20 @@
 var express = require('express');
 var router = express.Router();
-const { Client } = require('pg')
+
+const { Pool } = require('pg')
+
 require("dotenv").config()
-
 const databaseUrl = process.env.DATABASE_URL || 'postgresql://localhost:5432/test';
-const client = new Client({ connectionString: databaseUrl });
-
-console.log('Connecting' + databaseUrl)
-client.connect()
+const pool = new Pool({
+  connectionString: databaseUrl,
+})
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-  client.query('select * from USER', (err, res) => {
-    if (err) throw err
-    console.log(res)
+  pool.query(seedQuery, (err, res) => {
+    console.log(err, res)
     res.render('index', { title: 'Express', users: res })
-    client.end()
+    pool.end()
   })
 });
 
