@@ -13,7 +13,7 @@ const pool = new Pool({
 router.get('/', function (req, res, next) {
   pool.query('select * from users', (err, res) => {
     console.log(res)
-    res.render('index', { title: 'Express', users: res })
+    res.json({users: res})
     pool.end()
   })
 });
