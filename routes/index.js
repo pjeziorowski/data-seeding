@@ -1,21 +1,24 @@
 var express = require('express');
 var router = express.Router();
-const schema = require('../src/schema');
-
+const { Client } = require('pg')
+require("dotenv").config()
 const databaseUrl = process.env.DATABASE_URL
-  || 'mongodb://localhost:27017/test';
+  || 'postgresql://localhost:5432/test';
+const client = new Client({ connectionString: databaseUrl });
 
 console.log('Connecting' + databaseUrl)
-
-mongoose.connect(databaseUrl);
+client.connect()
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-  schema.find().then((data) => {
-    console.log(data);
-    res.render('index', { title: 'Express', users: data })
-  });
-  ;
+
+  client.query('select * from USER', (err, res) => {
+    if (err) throw err
+    console.log(res)
+    res.render('index', { title: 'Express', users: res })
+    client.end()
+  })
+
 });
 
 module.exports = router;
